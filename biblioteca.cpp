@@ -4,18 +4,18 @@
 #include <ctime>
 #include <stdio.h>
 #include <algorithm>    // std::random_shuffle
-#include <vector> 
+#include <vector>
 #include<cmath>
 #include "biblioteca.h"
 
-//CONTROLE DO TEMPO DO ALGORÍTMO
+//CONTROLE DO TEMPO DO ALGORITMO
 int TEMPO_INICIAL;
 float TEMPO_LIMITE = 98.0;
 
 using namespace std;
 
 
-//-------------Função Custo-----------------------------------------------------------
+//-------------Funï¿½ï¿½o Custo-----------------------------------------------------------
 int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, int nCarros)
  {
  	int aluguel = 0;
@@ -28,13 +28,13 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		if(i == 0)
 		{
 			aluguel = aluguel + aluguelCar[carros[0][0]][0][percurso[soma - 1]];
-			
+
 			for(int j = (guardaSoma) + 1; j < carros[1][i]; j++)
 			{
 				custo = custo + custoCar[carros[0][i]][ percurso[j-1]][percurso[j]];
 			}
 		}
-		
+
 		else if(i == nCarros - 1)
 		{
 			aluguel = aluguel + aluguelCar[carros[0][i]][percurso[guardaSoma]][0];
@@ -47,27 +47,27 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 				}
 			}
 		}
-			
+
 		else
 		{
 			aluguel = aluguel + aluguelCar[carros[0][i]][percurso[guardaSoma]][percurso[soma - 1]];
-			
+
 			for(int j = (guardaSoma) + 1; j < carros[1][i] + guardaSoma + 1; j++)
 			{
 				custo = custo + custoCar[carros[0][i] ][ percurso[j-1] ][percurso[j]];
 			}
 		}
-		
+
 		guardaSoma = soma -1;
 	}
 	int custoTotal = custo + aluguel;
-	
+
 	return custo + aluguel;
  }
  //____________________________________________________________________________________________________
- 
- 
- 
+
+
+
  //---------------------Preenche a matriz soluTemp-----------------------------------------------
  void funcPreencheSoluTem(int ***custoCar, int **soluTemp, int tamanhoMatriz, int nCarros)
  {
@@ -76,16 +76,16 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 	int temp = 0;
 	int carroEscolhido = -1;
 	int contaCidade = 0;
-	int *cidadeVisitada = (int*)malloc((tamanhoMatriz)*sizeof(int));//este vetor tem valores 0 se a cidade não  foi visitada e 1 se foi
+	int *cidadeVisitada = (int*)malloc((tamanhoMatriz)*sizeof(int));//este vetor tem valores 0 se a cidade nï¿½o  foi visitada e 1 se foi
 	cidadeVisitada[0] = 1;
 	for(int j = 1; j < tamanhoMatriz; j++)
 	{
 		cidadeVisitada[j] = 0;
-	}		
+	}
 	while(contaCidade < tamanhoMatriz)
 	{
 		for(int k = 0; k < nCarros; k++)
-		{	
+		{
 			for(int j = 0; j < tamanhoMatriz; j++)
 			{
 				if( ((custoCar[k][ondeEsta][j] ) < minimo ) && (ondeEsta != j) &&  (cidadeVisitada[j] != 1) )
@@ -95,8 +95,8 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 					carroEscolhido = k;
 				}
 			}
-		
-		}	
+
+		}
 		minimo = 10000;
 		ondeEsta = temp;
 		cidadeVisitada[ondeEsta] = 1;//aqui diz que a cidade ondeESta foi visitada
@@ -110,7 +110,7 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 	}
 	free(cidadeVisitada);
  }
- 
+
  //-----------------Preenche as matrizes percurso e carros----------------------------------------
  void funcPreenchePercursoEcar(int **carros, int **soluTemp, int *percurso, int tamanhoMatriz, int nCarros)
  {
@@ -131,43 +131,43 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		int ncar = t;
 		for(int i = cont; i < (tamanhoMatriz-1); i++)
 		{
-			
-			if(soluTemp[1][k] == soluTemp[1][i]) 
+
+			if(soluTemp[1][k] == soluTemp[1][i])
 			{
 				car[t] = soluTemp[1][i];
 				percurso[t] = soluTemp[0][i];
 				t++;
 			}
-			
+
 			else if(entra)
 			{
 				if(carRepetido[soluTemp[1][k]] == 0)
 					carRepetido[soluTemp[1][k]] = 1;
-	
+
 				cont = i;
 				entra = false;
 				numCar++;
 			}
-			
+
 		}
 		while (  (carRepetido[soluTemp[1][cont]] == 1) && (cont <(tamanhoMatriz-2)) )
 			cont++;
 		k = cont;
-		
+
 		ncar = t - ncar;
 		if(anterior ==(numCar-1))
 		{
 			numCar++;
 		}
-		carros[0][numCar-1] = car[t-1]; 
-		carros[1][numCar-1] = ncar; 
+		carros[0][numCar-1] = car[t-1];
+		carros[1][numCar-1] = ncar;
 		anterior = numCar-1;
 		entra = true;
 	}
 	free(car);
 	free(carRepetido);
  }
- 
+
  //------------Agrupa soluTemp---------------------
  void funcAgrupaSoluTemp(int **soluTemp, int **carros, int *percurso, int tamanhoMatriz, int nCarros)
  {
@@ -184,7 +184,7 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		int s = 0;
 	for(int i = 0; i < nCarros; i++)
 	{
-	
+
 		for(int j = 0; j < carros[1][i]; j++)
 		{
 			soluTemp[1][j+s] = carros[0][i];
@@ -192,7 +192,7 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		s = s + carros[1][i];
 	}
  }
- 
+
  //----Imprime a matriz soluTemp---------------------------------------------
  void funcImprimeSoluTemp(int **soluTemp, int tamanhoMatriz)
  {
@@ -208,7 +208,7 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 	}
 	cout << "\n";
  }
- 
+
 //----------Calcula o custo usando a matriz soluTemp-----------------
  int funcCustoSoluTemp(int ***custoCar, int ***aluguelCar, int **soluTemp, int tamanhoMatriz)
  {
@@ -226,15 +226,15 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 			aluguel = aluguel + aluguelCar[k][partida][chegada];
 			k = soluTemp[1][i];
 			partida = chegada;
-			
+
 		}
 		if( i == (tamanhoMatriz-1))
 		{
 			aluguel = aluguel + aluguelCar[k][partida][0];
 		}
-		
-		
-		
+
+
+
 		if( i ==  0)
 		{
 			custo = custo + custoCar[soluTemp[1][0]][0][soluTemp[0][i]];
@@ -243,13 +243,13 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		{
 			custo = custo + custoCar[soluTemp[1][i]][ soluTemp[0][i-1] ][soluTemp[0][i]];
 		}
-			
+
 	}
 
 	return custo + aluguel;
- } 
- 
- //---------------Função que busca melhorar a matriz da soluTemp----------------------------------
+ }
+
+ //---------------Funï¿½ï¿½o que busca melhorar a matriz da soluTemp----------------------------------
  void funcMelhoraSoluTemp(int ***custoCar, int ***aluguelCar, int **soluTemp, int tamanhoMatriz, int nCarros)
  {
  	int ***carross  = (int***)malloc(nCarros*sizeof(int**));
@@ -271,8 +271,8 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 			}
 		}
 	}
- 	
- 	int **solVenc = (int**)malloc(2*sizeof(int*));//busca solução vencedora
+
+ 	int **solVenc = (int**)malloc(2*sizeof(int*));//busca soluï¿½ï¿½o vencedora
 	for(int i = 0; i < 2; i++)
 		solVenc[i] = (int*)malloc(tamanhoMatriz*sizeof(int));
 	solVenc[0][tamanhoMatriz-1] = 0;
@@ -290,8 +290,8 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		}
 	}
 	//___________________________________________________
-	
-	//Análise de cada caso de acordo com numero de carros
+
+	//Anï¿½lise de cada caso de acordo com numero de carros
 	//----------Com dois carros--------------------------------------------------
 	int minimo = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz);
  	if(nCarros == 2)
@@ -313,16 +313,16 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 					minimo = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz);
 				}
 				j++;
-				while((i-j) == 0)j++;		
-			}	
+				while((i-j) == 0)j++;
+			}
 		}
 	}
 	//________________________________________________________________________________
-	
-	//-----------Com três carros---------------------------------------------
- 	
+
+	//-----------Com trï¿½s carros---------------------------------------------
+
  	else if(nCarros == 3)
- 	{	
+ 	{
  		for(int i = 0; i < nCarros; i++)
  		{
 			int j = 0;
@@ -347,16 +347,16 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 					while((i-k)*(j-k) == 0) k++;
 				}
 				j++;
-				while((i-j) == 0)j++;		
-			}	
+				while((i-j) == 0)j++;
+			}
 		}
 	}
 	//________________________________________________________________________________
-	
+
 	//--------------Com quatro carros------------------------------------------------
-	
+
  	else if(nCarros == 4)
- 	{	
+ 	{
  		for(int i = 0; i < nCarros; i++)
  		{
 			int j = 0;
@@ -382,22 +382,22 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 							minimo = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz);
 						}
 						w++;
-						while((i-w)*(j-w)*(k-w) == 0 ) w++;	
+						while((i-w)*(j-w)*(k-w) == 0 ) w++;
 					}
 					k++;
 					while((i-k)*(j-k) == 0) k++;
 				}
 				j++;
-				while((i-j) == 0)j++;		
-			}	
+				while((i-j) == 0)j++;
+			}
 		}
 	}
 	//_________________________________________________________________________________
-	
+
 	//-------------------Com cinco carros--------------------------------------------
-	
+
  	else if(nCarros == 5)
- 	{	
+ 	{
  		for(int i = 0; i < nCarros; i++)
  		{
 			int j = 0;
@@ -430,16 +430,16 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 							while((i-t)*(j-t)*(k-t)*(w-t) == 0 ) t++;
 						}
 						w++;
-						while((i-w)*(j-w)*(k-w) == 0 ) w++;	
+						while((i-w)*(j-w)*(k-w) == 0 ) w++;
 					}
 					k++;
 					while((i-k)*(j-k) == 0) k++;
 				}
 				j++;
-				while((i-j) == 0)j++;		
-			}	
+				while((i-j) == 0)j++;
+			}
 		}
-		
+
 	}
 	//--------------Libera memoria-------------------------
 	for(int k = 0; k < nCarros; k++)
@@ -452,24 +452,24 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		free(carross[k]);
 	}
 	free(carross);
-	
-	
+
+
 	for(int i = 0; i < 2; i++)
 		free(solVenc[i]);
 	free(solVenc);
 	//_______________________________________________________
-	
+
  }
- 
- 
- 
- //---------Funções que permutam------------------------------------------------------
- //------------Função que permuta dois blocos----------------------------
+
+
+
+ //---------Funï¿½ï¿½es que permutam------------------------------------------------------
+ //------------Funï¿½ï¿½o que permuta dois blocos----------------------------
  void funcPermutaSoluTemp(int c1, int c2, int **solVenc, int ***carross)
  {
  	int c = 0;
 	int s = 0;
-	
+
 	while(carross[c1][0][c] != -1)
 	{
 		solVenc[0][s] = carross[c1][0][c];
@@ -486,15 +486,15 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		s++;
 	}
 	solVenc[1][s] = carross[c2][1][c-1];
-	
+
  }
  //____________________________________________________________________________
- //--------------Função que permuta 3 blocos-----------------------------------
+ //--------------Funï¿½ï¿½o que permuta 3 blocos-----------------------------------
  void funcPermutaSoluTemp(int c1, int c2, int c3, int **solVenc, int ***carross)
 {
  	int c = 0;
 	int s = 0;
-	
+
 	while(carross[c1][0][c] != -1)
 	{
 		solVenc[0][s] = carross[c1][0][c];
@@ -519,15 +519,15 @@ int funcCusto(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 		s++;
 	}
 	solVenc[1][s] = carross[c3][1][c-1];
-	
+
 }
 //___________________________________________________________
-//--------------Função que permuta 4 blocos-----------------
+//--------------Funï¿½ï¿½o que permuta 4 blocos-----------------
 void funcPermutaSoluTemp(int c1, int c2, int c3, int c4, int **solVenc, int ***carross)
 {
 	int c = 0;
 	int s = 0;
-	
+
 	while(carross[c1][0][c] != -1)
 	{
 		solVenc[0][s] = carross[c1][0][c];
@@ -560,15 +560,15 @@ void funcPermutaSoluTemp(int c1, int c2, int c3, int c4, int **solVenc, int ***c
 		s++;
 	}
 	solVenc[1][s] = carross[c4][1][c-1];
-	
+
 }
 //________________________________________________________________________________
-//------------------Função que permuta 5 blocos----------------------------------
+//------------------Funï¿½ï¿½o que permuta 5 blocos----------------------------------
 void funcPermutaSoluTemp(int c1, int c2, int c3, int c4, int c5, int **solVenc, int ***carross)
 {
 	int c = 0;
 	int s = 0;
-	
+
 	while(carross[c1][0][c] != -1)
 	{
 		solVenc[0][s] = carross[c1][0][c];
@@ -609,31 +609,31 @@ void funcPermutaSoluTemp(int c1, int c2, int c3, int c4, int c5, int **solVenc, 
 		s++;
 	}
 	solVenc[1][s] = carross[c5][1][c-1];
-	
+
 }
 //______________________________________________________________
-//----Função para inverter a matriz no formato soluTemp--------
+//----Funï¿½ï¿½o para inverter a matriz no formato soluTemp--------
 void funcInverteSoluTemp(int **soluTemp, int tamanhoMatriz)
 {
 	int temp1,temp2;
 	int c = (tamanhoMatriz-1);
-	for (int i = 0; i < c/2; i++)	
+	for (int i = 0; i < c/2; i++)
 	{
 		temp1 = soluTemp[0][i];
 		soluTemp[0][i] = soluTemp[0][c-i-1];
 		soluTemp[0][c-i-1] = temp1;
-	
+
 		temp2 = soluTemp[1][i];
 		soluTemp[1][i] = soluTemp[1][c-i-1];
 		soluTemp[1][c-i-1] = temp2;
 	}
 }
 //_______________________________________________________________
-// ----Função que faza ultima melhora de soluTemp----------------
+// ----Funï¿½ï¿½o que faza ultima melhora de soluTemp----------------
 int funcSolTempFinalizado(int ***custoCar, int ***aluguelCar, int **soluTemp, int tamanhoMatriz, int nCarros)
 {
 	funcMelhoraSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz, nCarros);
-	int **solVenc = (int**)malloc(2*sizeof(int*));//busca solução vencedora
+	int **solVenc = (int**)malloc(2*sizeof(int*));//busca soluï¿½ï¿½o vencedora
 	for(int i = 0; i < 2; i++)
 		solVenc[i] = (int*)malloc(tamanhoMatriz*sizeof(int));
 	for(int i = 0; i < tamanhoMatriz; i++)
@@ -652,8 +652,8 @@ int funcSolTempFinalizado(int ***custoCar, int ***aluguelCar, int **soluTemp, in
 		funcMelhoraSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz, nCarros);
 		minimo = minimo2;
 	}
-	
-	//Libera memória----------
+
+	//Libera memï¿½ria----------
 	for(int i = 0; i < 2; i++)
 		free(solVenc[i]);
 	free(solVenc);
@@ -687,12 +687,12 @@ void funcRepreenchePercursoECar(int **carros, int **soluTemp, int *percurso, int
 	}
 }
 
-//-----------Busca local de acordo com suas vizinhanças------------------------------------------------------------------------------
-//------------Troca apenas uma cidade com outra de cada vez, e analisa o resultado buscando custo mínimo---------------------
+//-----------Busca local de acordo com suas vizinhanï¿½as------------------------------------------------------------------------------
+//------------Troca apenas uma cidade com outra de cada vez, e analisa o resultado buscando custo mï¿½nimo---------------------
 int funcBucaLocalTrocaOrdemDePercurso(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, int nCarros, int tamanhoMatriz)
 {
 	int minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
-	
+
 	for(int i = 0; i < (tamanhoMatriz-1); i++)
 	{
 		int temp1, temp2;
@@ -714,11 +714,11 @@ int funcBucaLocalTrocaOrdemDePercurso(int ***custoCar, int ***aluguelCar, int **
 
 //Troca apenas um carro, ou seja se usa 10 vezes o carro A e 6 o carro B, fazendo a troca podemos ter
 // usar 9 vezes o carro A e 7 vezes o carro B, ou vice e versa
-//Retorna o menor valor 
+//Retorna o menor valor
 int funcBuscaTrocaCarros(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, int nCarros)
 {
 	int minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
-	
+
 	for(int i = 0; i < nCarros; i++)
 	{
 		for(int j = i+1; j < nCarros; j++)
@@ -743,7 +743,7 @@ int funcBuscaTrocaCarros(int ***custoCar, int ***aluguelCar, int **carros, int *
 int funcBuscaTrocaOrdemDosCarros(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, int nCarros)
 {
 	int minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
-	
+
 	for(int i = 0; i < nCarros; i++)
 	{
 		int temp1, temp2;
@@ -765,7 +765,7 @@ int funcBuscaTrocaOrdemDosCarros(int ***custoCar, int ***aluguelCar, int **carro
 //________________________________________________________________________________________________________________________
 
 
-//não retorna o menor valor apenar realiza uma perturbação
+//nï¿½o retorna o menor valor apenar realiza uma perturbaï¿½ï¿½o
 void funcElementoArbitrarioTrocaPercurso(int *percurso, int tamanhoMatriz)
 {
 	bool entra = true;
@@ -779,14 +779,14 @@ void funcElementoArbitrarioTrocaPercurso(int *percurso, int tamanhoMatriz)
 		{
 			temp = percurso[i];
 			percurso[i] = percurso[j];
-			percurso[j] = temp;	
+			percurso[j] = temp;
 			entra = false;
 		}
 	}
-	
+
 }
 
-//não retorna o menor valor apenas uma perturbação
+//nï¿½o retorna o menor valor apenas uma perturbaï¿½ï¿½o
 void funcElementoArbitrarioTrocaCarros(int **carros, int nCarros)
 {
 	bool entra = true;
@@ -808,7 +808,7 @@ void funcElementoArbitrarioTrocaCarros(int **carros, int nCarros)
 	}
 }
 
-// não devolve o mínimo, apenas realiza uma perturbação
+// nï¿½o devolve o mï¿½nimo, apenas realiza uma perturbaï¿½ï¿½o
 void funcElementoArbitrarioTrocaOrdemCarros(int **carros, int nCarros)
 {
 	bool entra = true;
@@ -822,19 +822,19 @@ void funcElementoArbitrarioTrocaOrdemCarros(int **carros, int nCarros)
 		{
 			temp = carros[0][i];
 			carros[0][i] = carros[0][j];
-			carros[0][j] = temp;	
+			carros[0][j] = temp;
 			entra = false;
 		}
 	}
-	
+
 }
 
 
 void funcRVND(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, int nCarros, int tamanhoMatriz)
 {
-	//Escolhe uma vizinhança de forma aleatória
+	//Escolhe uma vizinhanï¿½a de forma aleatï¿½ria
 	srand ( unsigned ( time(0) ) );
-  	vector<int> v; 
+  	vector<int> v;
 
  	// conjunto de valores
   	for (int i = 0; i < 3; ++i) v.push_back(i); // 1 2 3
@@ -845,8 +845,8 @@ void funcRVND(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
   	// usando myrandom:
   	random_shuffle ( v.begin(), v.end(), myrandom);
 	//____________________________________
-	//Realiza a busca local escolhendo cada vizinhança de forma aleatória;
-	
+	//Realiza a busca local escolhendo cada vizinhanï¿½a de forma aleatï¿½ria;
+
 	int k = 0;
 	while(k < 3)
 	{
@@ -866,8 +866,8 @@ void funcRVND(int ***custoCar, int ***aluguelCar, int **carros, int *percurso, i
 	}
 }
 
-//Troca de forma aleatória
-//não retorna o menor, apenas faz uma perturbação
+//Troca de forma aleatï¿½ria
+//nï¿½o retorna o menor, apenas faz uma perturbaï¿½ï¿½o
 void funcTrocaOrdemDePercurso(int *percurso, int tamanhoMatriz, int numeroDeTroca)
 {
 	srand((unsigned)time(0));
@@ -889,66 +889,66 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 {
 	int aceita = 1;
 	int controle = 100; //usado apenas quando tamanhoMatriz > 200
-	
+
 	//______________________________________________
-	
+
 	//Inicializa a matriz perT
 	int *perT = (int*)malloc((tamanhoMatriz - 1)*sizeof(int));
 	for(int i = 0; i < (tamanhoMatriz -1); i++)
 		perT[i] = percurso[i];
-		
+
 	//Inicializa a matriz carT
-	int **carT = (int**)malloc(2*sizeof(int*)); 
-	for(int i = 0; i < 2; i++)                    
+	int **carT = (int**)malloc(2*sizeof(int*));
+	for(int i = 0; i < 2; i++)
 		carT[i] = (int*)malloc((nCarros)*sizeof(int));
 	for(int i = 0; i < nCarros; i++)
 	{
 		carT[0][i] = carros[0][i];
 		carT[1][i] = carros[1][i];
 	}
-	
+
 	for(int i = 0; i < tamanhoMatriz; i ++)
 	{
 		solT[0][i] = soluTemp[0][i];
 		solT[1][i] = soluTemp[1][i];
 	}
-	
+
 	int inter = 0;
-	int minimo ; 
+	int minimo ;
 	int minimoT;
 	while(inter < nInterSemMelhora)
 	{
 		for(int i = 0; i < (tamanhoMatriz -1); i++)
 		perT[i] = percurso[i];
-		
+
 		for(int i = 0; i < nCarros; i++)
 		{
 			carT[0][i] = carros[0][i];
 			carT[1][i] = carros[1][i];
 		}
-		
+
 		if(tamanhoMatriz < 200)
 		{
-		
+
 			int k = 0;
 			while(k < 3)
 			{
-				if(k == 0)       //if((k == 0)&&(inter <= controle) ) 
+				if(k == 0)       //if((k == 0)&&(inter <= controle) )
 				{
 					for(int i = 0; i < 10; i++)
 						funcBucaLocalTrocaOrdemDePercurso(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					for(int i = 0; i < 6; i++)
 						minimoT = funcBuscaTrocaCarros(custoCar, aluguelCar, carT, perT, nCarros);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
 					//funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
-				
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					//minimoT = funcCustoSoluTemp(custoCar, aluguelCar, solT, tamanhoMatriz);
-				
+
 					//CONTROLE DO TEMPO
 					if(( (clock() - TEMPO_INICIAL)/1000.0) >= TEMPO_LIMITE)
 					{
@@ -956,14 +956,14 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						return variavel;
 					}
 					//__________________
-				
+
 					if( minimoT < minimo + aceita)
 					{
 						if(minimoT < minimo)
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -971,7 +971,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -985,19 +985,19 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						k++; inter++;
 					}
 				}
-			
+
 				else if(k == 1 )      // else if((k == 1)&&(inter <= controle) )
 				{
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
-				
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					//minimoT = funcCustoSoluTemp(custoCar, aluguelCar, solT, tamanhoMatriz);
-				
+
 					//CONTROLE DO TEMPO
 					if(( (clock() - TEMPO_INICIAL)/1000.0) >= TEMPO_LIMITE)
 					{
@@ -1005,14 +1005,14 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						return variavel;
 					}
 					//__________________
-				
+
 					if( minimoT < minimo + aceita)
 					{
 						if(minimoT < minimo)
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1020,7 +1020,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1034,7 +1034,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						k++; inter++;
 					}
 				}
-			
+
 				else if(k == 2)            //else if( (k == 2)&&(inter <= controle)  )
 				{
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
@@ -1042,13 +1042,13 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
 					minimoT = funcBucaLocalTrocaOrdemDePercurso(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
 					//funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
-			
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					//minimoT = funcCustoSoluTemp(custoCar, aluguelCar, solT, tamanhoMatriz);
-				
+
 					//CONTROLE DO TEMPO
 					if(( (clock() - TEMPO_INICIAL)/1000.0) >= TEMPO_LIMITE)
 					{
@@ -1056,14 +1056,14 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						return variavel;
 					}
 					//__________________
-				
+
 					if( minimoT < minimo + aceita)
 					{
 						if(minimoT < minimo)
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1071,7 +1071,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-							
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1084,37 +1084,37 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 					{
 						k++; inter++;
 					}
-				}		
+				}
 			}
 			//ate aqui
 		}
-		
+
 		//para tamanhoMatriz > 200
 		else
 		{
 			//daqui
-			
+
 			int k = 0;
-		
-		
+
+
 			while(k < 3)
 			{
-				if((k == 0)&&(inter <= controle) ) 
+				if((k == 0)&&(inter <= controle) )
 				{
 					for(int i = 0; i < 6; i++)
 					{
 						funcBucaLocalTrocaOrdemDePercurso(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
 					}
-					
+
 					for(int i = 0; i < 6; i++)
 					{
 							funcBuscaTrocaCarros(custoCar, aluguelCar, carT, perT, nCarros);
 					}
-				
+
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-				
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1123,7 +1123,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1131,7 +1131,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1151,9 +1151,9 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-	
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1162,7 +1162,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-							
+
 						else
 						{
 							inter++; k++;
@@ -1170,7 +1170,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-							
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1189,9 +1189,9 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-			
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT =funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1200,7 +1200,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1208,7 +1208,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1222,27 +1222,27 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						k++; inter++;
 					}
 				}
-			
-			
-			
-			
-			
+
+
+
+
+
 				else if(  (k == 2) )
 				{
 					for( int i = 0; i < 6; i++)
 					{
 						funcBucaLocalTrocaOrdemDePercurso(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
 					}
-					
+
 					for(int i = 0; i < 6; i++)
 					{
 							funcBuscaTrocaCarros(custoCar, aluguelCar, carT, perT, nCarros);
 					}
-				
+
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-					
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1251,7 +1251,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1259,7 +1259,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1278,11 +1278,11 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
 					funcElementoArbitrarioTrocaCarros(carT,  nCarros);
-				
+
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-					
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1291,7 +1291,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
@@ -1299,7 +1299,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1307,7 +1307,7 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						}
 						funcAgrupaSoluTemp(soluTemp, carT, perT, tamanhoMatriz, nCarros);
 						//cout << "minimoT = " << minimoT << "    minimo = " << minimo << endl;
-				
+
 					}
 					else
 					{
@@ -1317,14 +1317,14 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 				else if( (k == 0))
 				{
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
-				
+
 					funcElementoArbitrarioTrocaOrdemCarros(carT, nCarros);
-				
+
 					funcRVND(custoCar, aluguelCar, carT, perT, nCarros, tamanhoMatriz);
-				
+
 					funcAgrupaSoluTemp(solT, carT, perT, tamanhoMatriz, nCarros);
-					
-				
+
+
 					minimo = funcCusto(custoCar, aluguelCar, carros, percurso, nCarros);
 					minimoT = funcSolTempFinalizado(custoCar, aluguelCar, solT, tamanhoMatriz, nCarros);
 					if( minimoT < minimo + aceita)
@@ -1333,16 +1333,16 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						{
 							inter = 0; k = 0;
 						}
-						
+
 						else
 						{
 							inter++; k++;
 						}
-						
+
 						funcRepreenchePercursoECar(carT, solT, perT, tamanhoMatriz, nCarros);
 						for(int i = 0; i < (tamanhoMatriz -1); i++)
 							percurso[i] = perT[i];
-						
+
 						for(int i = 0; i < nCarros; i++)
 						{
 							carros[0][i] = carT[0][i];
@@ -1350,30 +1350,30 @@ int funcVNS(int ***custoCar, int ***aluguelCar, int **carros, int **soluTemp, in
 						}
 						funcAgrupaSoluTemp(soluTemp, carT, perT, tamanhoMatriz, nCarros);
 						//cout << "minimoT = " << minimoT << "    minimo = " << minimo << endl;
-					
+
 					}
 					else
 					{
 						k++; inter++;
 					}
 				}
-				
+
 			}
-			
-			//até aqui
+
+			//atï¿½ aqui
 		}
 	}
-	
-	
-	//Libera memória--------------
+
+
+	//Libera memï¿½ria--------------
 	free(perT);
 	for(int i = 0; i < 2; i++)
 		free(carT[i]);
 	free(carT);
 	//___________________________
-	
+
 	return minimo;
-	
+
 }
 
 //Imprime uma matriz nCarrosXtamanhoMatriz
@@ -1390,20 +1390,20 @@ void funImprimeMat(int **mat, int tamanhoMatriz, int nCarros)
 		cout << " ]" << endl;
 		cout << "\n";
 	}
-}	
+}
 
-//função gera numeros aleatorios
+//funï¿½ï¿½o gera numeros aleatorios
 int myrandom (int i) { return rand()%i;};
 
-//Função extremamente importante para o algorítmos, usa a matriz soluTemp para construir uma boa solução soluTemp1
+//Funï¿½ï¿½o extremamente importante para o algorï¿½tmos, usa a matriz soluTemp para construir uma boa soluï¿½ï¿½o soluTemp1
 void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nCarros)
 {
 	int indF0 = 0; int indF1 = 0; int indF2 = 0; int indF3 = 0; int indF4 = 0;
  	int indI0 = 0; int indI1 = 0; int indI2 = 0; int indI3 = 0; int indI4 = 0;
  	bool entra0 = true; bool entra1 = true; bool entra2 = true; bool entra3 = true; bool entra4 = true;
- 	
- 	int termina;//é a última posição do vetor soluTemp1
-	
+
+ 	int termina;//ï¿½ a ï¿½ltima posiï¿½ï¿½o do vetor soluTemp1
+
 	int **posCarI = (int**)malloc(nCarros*sizeof(int*));
 	for(int i = 0; i < nCarros; i++)
 		posCarI[i] = (int*)malloc(tamanhoMatriz*sizeof(int));
@@ -1420,8 +1420,8 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 		for(int j = 0; j < tamanhoMatriz; j++)
 			posCarF[i][j] = -1;
 	}
-	
- 		
+
+
  	for(int i = 0; i < (tamanhoMatriz-1); i++ )
  	{
  		if(i == (tamanhoMatriz -2))
@@ -1437,7 +1437,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
  			if(soluTemp[1][i] == 4)
  				posCarF[4][indF4] = (tamanhoMatriz-2);
 		}
- 		
+
  		switch (soluTemp[1][i])
  		{
  			case 0:
@@ -1445,10 +1445,10 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 				{
 					posCarI[0][indI0] = i;
 					indI0++;
-			 		entra0 = false; 
-			 
+			 		entra0 = false;
+
 				}
- 				
+
 				if(soluTemp[1][i] != soluTemp[1][i-1])
 				{
 					switch (soluTemp[1][i-1])
@@ -1458,29 +1458,29 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 							indF1++;
 							entra1 = true;
 						break;
-						
+
 						case 2:
 							posCarF[2][indF2] = i-1;
 							indF2++;
 							entra2 = true;
 						break;
-						
+
 						case 3:
 							posCarF[3][indF3] = i-1;
 							indF3++;
 							entra3 = true;
 						break;
-						
+
 						case 4:
 							posCarF[4][indF4] = i-1;
 							indF4++;
 							entra4 = true;
-						break;	
+						break;
 					}
-					
+
 				}
 			break;
-			
+
 			case 1:
  				if(entra1)
 				{
@@ -1488,8 +1488,8 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 					indI1++;
 					entra1 = false;
 				}
- 				
-	
+
+
 				if(soluTemp[1][i] != soluTemp[1][i-1])
 				{
 					switch (soluTemp[1][i-1])
@@ -1499,19 +1499,19 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 							indF0++;
 							entra0 = true;
 						break;
-						
+
 						case 2:
 							posCarF[2][indF2] = i-1;
 							indF2++;
 							entra2 = true;
 						break;
-						
+
 						case 3:
 							posCarF[3][indF3] = i-1;
 							indF3++;
 							entra3 = true;
 						break;
-						
+
 						case 4:
 							posCarF[4][indF4] = i-1;
 							indF4++;
@@ -1520,7 +1520,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 					}
 				}
 			break;
-	
+
 			case 2:
  				if(entra2)
 				{
@@ -1528,7 +1528,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			 		indI2++;
 			 		entra2 = false;
 				}
- 				
+
 				if(soluTemp[1][i] != soluTemp[1][i-1])
 				{
 					switch (soluTemp[1][i-1])
@@ -1538,19 +1538,19 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 							indF0++;
 							entra0 = true;
 						break;
-						
+
 						case 1:
 							posCarF[1][indF1] = i-1;
 							indF1++;
 							entra1 = true;
 						break;
-					
+
 						case 3:
 							posCarF[3][indF3] = i-1;
 							indF3++;
 							entra3 = true;
 						break;
-						
+
 						case 4:
 							posCarF[4][indF4] = i-1;
 							indF4++;
@@ -1559,7 +1559,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 					}
 				}
 			break;
-				
+
 			case 3:
  				if(entra3)
 				{
@@ -1567,7 +1567,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			 		indI3++;
 			 		entra3 = false;
 				}
- 				
+
 				if(soluTemp[1][i] != soluTemp[1][i-1])
 				{
 					switch (soluTemp[1][i-1])
@@ -1577,19 +1577,19 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 							indF0++;
 							entra0 = true;
 						break;
-					
+
 						case 1:
 							posCarF[1][indF1] = i-1;
 							indF1++;
 							entra1 = true;
 						break;
-						
+
 						case 2:
 							posCarF[2][indF2] = i-1;
 							indF2++;
 							entra2 = true;
 						break;
-					
+
 						case 4:
 							posCarF[4][indF4] = i-1;
 							indF4++;
@@ -1598,7 +1598,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 					}
 				}
 			break;
-			
+
 			case 4:
  				if(entra4)
 				{
@@ -1606,7 +1606,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			 		indI4++;
 			 		entra4 = false;
 				}
-	
+
 				if(soluTemp[1][i] != soluTemp[1][i-1])
 				{
 					switch (soluTemp[1][i-1])
@@ -1616,30 +1616,30 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 							indF0++;
 							entra0 = true;
 						break;
-					
+
 						case 1:
 							posCarF[1][indF1] = i-1;
 							indF1++;
 							entra1 = true;
 						break;
-						
+
 						case 2:
 							posCarF[2][indF2] = i-1;
 							indF2++;
 							entra2 = true;
 						break;
-						
+
 						case 3:
 							posCarF[3][indF3] = i-1;
 							indF3++;
 							entra3 = true;
 						break;
-					}	
+					}
 				}
-			break;	
+			break;
 		}
 	}
-	
+
 	int *blocoCar = (int*)malloc(nCarros*sizeof(int));
 	for(int i = 0; i < nCarros; i++)
 	{
@@ -1653,17 +1653,17 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 				break;
 		}
 	}
-	
-	
+
+
 	if( nCarros == 2)
 	{
 		int indice[nCarros]; funcOrdenaAleatorioVetor(indice,nCarros);
-		
-  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; 
-  		
+
+  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]];
+
 		funcOrdenaAleatorioVetor(v0, blocoCar[indice[0]]);
 		funcOrdenaAleatorioVetor(v1, blocoCar[indice[1]]);
-		
+
 		termina = indice[nCarros-1];
 
 		int cont = 0;
@@ -1689,21 +1689,21 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			}
 		}
 		soluTemp1[0][tamanhoMatriz-1] = 0;
-		soluTemp1[1][tamanhoMatriz-1] = termina;		
+		soluTemp1[1][tamanhoMatriz-1] = termina;
 	}
-		
+
 	else if( nCarros == 3)
 	{
 		int indice[nCarros]; funcOrdenaAleatorioVetor(indice,nCarros);
-		
-  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; int v2[blocoCar[indice[2]]]; 
-  		
+
+  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; int v2[blocoCar[indice[2]]];
+
 		funcOrdenaAleatorioVetor(v0, blocoCar[indice[0]]);
 		funcOrdenaAleatorioVetor(v1, blocoCar[indice[1]]);
 		funcOrdenaAleatorioVetor(v2, blocoCar[indice[2]]);
-		
+
 		termina = indice[nCarros-1];
-		
+
 		int cont = 0;
 		while(cont < (tamanhoMatriz-1))
 		{
@@ -1725,7 +1725,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 					cont++;
 				}
 			}
-			for(int i = 0; i < blocoCar[indice[2]]; i++) 
+			for(int i = 0; i < blocoCar[indice[2]]; i++)
 			{
 				for(int j = 0; j < (posCarF[indice[2]][v2[i]]+1 - posCarI[indice[2]][v2[i]]); j++)
 				{
@@ -1736,22 +1736,22 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			}
 		}
 		soluTemp1[0][tamanhoMatriz-1] = 0;
-		soluTemp1[1][tamanhoMatriz-1] = termina;			
+		soluTemp1[1][tamanhoMatriz-1] = termina;
 	}
-		
+
 	else if(nCarros == 4)
 	{
 		int indice[nCarros]; funcOrdenaAleatorioVetor(indice,nCarros);
-		
-  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; int v2[blocoCar[indice[2]]]; int v3[blocoCar[indice[3]]]; 
-  		
+
+  		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; int v2[blocoCar[indice[2]]]; int v3[blocoCar[indice[3]]];
+
 		funcOrdenaAleatorioVetor(v0, blocoCar[indice[0]]);
 		funcOrdenaAleatorioVetor(v1, blocoCar[indice[1]]);
 		funcOrdenaAleatorioVetor(v2, blocoCar[indice[2]]);
 		funcOrdenaAleatorioVetor(v3, blocoCar[indice[3]]);
-		
+
 		termina = indice[nCarros-1];
-		
+
 		int cont = 0;
 		while(cont < (tamanhoMatriz-1))
 		{
@@ -1793,23 +1793,23 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			}
 		}
 		soluTemp1[0][tamanhoMatriz-1] = 0;
-		soluTemp1[1][tamanhoMatriz-1] = termina;				
+		soluTemp1[1][tamanhoMatriz-1] = termina;
 	}
-	
+
 	else if(nCarros == 5)
 	{
 		int indice[nCarros]; funcOrdenaAleatorioVetor(indice,nCarros);
-		
+
   		int v0[blocoCar[indice[0]]]; int v1[blocoCar[indice[1]]]; int v2[blocoCar[indice[2]]]; int v3[blocoCar[indice[3]]]; int v4[blocoCar[indice[4]]];
-  		
+
 		funcOrdenaAleatorioVetor(v0, blocoCar[indice[0]]);
 		funcOrdenaAleatorioVetor(v1, blocoCar[indice[1]]);
 		funcOrdenaAleatorioVetor(v2, blocoCar[indice[2]]);
 		funcOrdenaAleatorioVetor(v3, blocoCar[indice[3]]);
 		funcOrdenaAleatorioVetor(v4, blocoCar[indice[4]]);
-		
+
 		termina = indice[nCarros-1];
-		
+
 		int cont = 0;
 		while(cont < (tamanhoMatriz-1))
 		{
@@ -1860,10 +1860,10 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 			}
 		}
 		soluTemp1[0][tamanhoMatriz-1] = 0;
-		soluTemp1[1][tamanhoMatriz-1] = termina;				
+		soluTemp1[1][tamanhoMatriz-1] = termina;
 	}
 
-	
+
 	//Libera memoria
 	for(int i = 0; i < nCarros; i++)
 		free(posCarI[i]);
@@ -1874,7 +1874,7 @@ void funcConstSolucao(int **soluTemp, int **soluTemp1, int tamanhoMatriz, int nC
 	free(blocoCar);
 }
 
-//Busca uma solução inicial melhor
+//Busca uma soluï¿½ï¿½o inicial melhor
 void funcMelhorSolucaoInicial(int ***custoCar, int ***aluguelCar, int **soluTemp, int **soluTemp1, int **soluTemp0, int tamanhoMatriz, int nCarros, int nDeInteracoes)
 {
 	int inter = 0;
@@ -1886,7 +1886,7 @@ void funcMelhorSolucaoInicial(int ***custoCar, int ***aluguelCar, int **soluTemp
 		minimo = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz);
 		minimo1 = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp1, tamanhoMatriz);
 		//cout << "minimo = " << funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz) << endl;
-		
+
 		if(minimo1 < minimo)
 		{
 			for(int i = 0; i < tamanhoMatriz; i++)
@@ -1899,26 +1899,26 @@ void funcMelhorSolucaoInicial(int ***custoCar, int ***aluguelCar, int **soluTemp
 		}
 		inter++;
 	}
-	
+
 }
 
 
 //ordena vetores
 void quick(int* vetor, int inicio, int fim)
 {
-   
+
    int pivo, aux, i, j, meio;
-   
+
    i = inicio;
    j = fim;
-   
+
    meio = (int) ((i + j) / 2);
    pivo = vetor[meio];
-   
+
    do{
       while (vetor[i] < pivo) i = i + 1;
       while (vetor[j] > pivo) j = j - 1;
-      
+
       if(i <= j){
          aux = vetor[i];
          vetor[i] = vetor[j];
@@ -1927,24 +1927,24 @@ void quick(int* vetor, int inicio, int fim)
          j = j - 1;
       }
    }while(j > i);
-   
+
    if(inicio < j) quick(vetor, inicio, j);
-   if(i < fim) quick(vetor, i, fim);   
+   if(i < fim) quick(vetor, i, fim);
 
 }
 
-//ordena um vetor em ordem aleatória
+//ordena um vetor em ordem aleatï¿½ria
 void funcOrdenaAleatorioVetor(int* vA, int tamanho)
 {
-	int v[tamanho]; 
-		
+	int v[tamanho];
+
 	for(int i = 0; i < tamanho; i++)
 	{
 		vA[i] = v[i] = rand();
 	}
-		
+
 	quick(v, 0, tamanho-1);
-		
+
 	for(int i = 0; i < tamanho; i++)
 	{
 		for(int j = 0; j < tamanho; j++)
@@ -1958,14 +1958,14 @@ void funcOrdenaAleatorioVetor(int* vA, int tamanho)
 	}
 }
 
-// -------------A FUNÇÃO PRINCIPAL DO TRABALHO O ILS----------------------
+// -------------A FUNï¿½ï¿½O PRINCIPAL DO TRABALHO O ILS----------------------
 int funcILS(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, int **soluTemp, int **soluTemp1, int **soluTemp0, int *percurso, int tamanhoMatriz, int nCarros)
 {
 	int numIntVNS = 120;
 	int minimo, minimo1;
 	int resultado = minimo = funcVNS(custoCar, aluguelCar, carros, soluTemp, solT, percurso, nCarros, tamanhoMatriz, numIntVNS);
 	int nDeInteracoes = 1;
-	
+
 	//minimo = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp, tamanhoMatriz);
 	int inter = 0;
 	bool entra = true;
@@ -1975,9 +1975,9 @@ int funcILS(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, int 
 		funcSolTempFinalizado(custoCar, aluguelCar, soluTemp1, tamanhoMatriz, nCarros);
 		funcRepreenchePercursoECar(carros, soluTemp1, percurso, tamanhoMatriz, nCarros);
 		minimo1 = funcVNS(custoCar, aluguelCar, carros, soluTemp1, solT, percurso, nCarros, tamanhoMatriz, numIntVNS);
-		
+
 		//minimo1 = funcCustoSoluTemp(custoCar, aluguelCar, soluTemp1, tamanhoMatriz);
-		
+
 		//CONTROLE DO TEMPO
 		if(( (clock() - TEMPO_INICIAL)/1000.0) >= TEMPO_LIMITE)
 		{
@@ -2003,7 +2003,7 @@ int funcILS(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, int 
 					nDeInteracoes=+2;
 				else if( (tamanhoMatriz >= 40)&&(tamanhoMatriz < 200) )
 					nDeInteracoes++;
-					
+
 				entra = false;
 				if(resultado > minimo)
 				{
@@ -2020,7 +2020,7 @@ int funcILS(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, int 
 			{
 				nDeInteracoes += 4;
 			}
-					
+
 			resultado = minimo;
 		}
 	}
@@ -2035,13 +2035,13 @@ int funcMedia(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, in
 	int valor;
 	int minimo = 999999;
 	double minimoT = 99999999.0;
-	
+
 	int valores[numeroInter];
 	double tempos[numeroInter];
 	FILE *arq = fopen("Aracaju200n.txt", "w");
-	
+
 	fprintf(arq,"\n");
-	
+
 	for(int i = 0; i < numeroInter; i++)
 	{
 		TEMPO_INICIAL = clock();
@@ -2070,7 +2070,7 @@ int funcMedia(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, in
 	for(int i = 0; i < numeroInter; i++)
 	{
 		soma2 +=  (valores[i] - media)*(valores[i] - media);
-		if(i < numeroInter-1) 
+		if(i < numeroInter-1)
 			fprintf(arq," %5d, ",valores[i]);
 		else
 			fprintf(arq," %5d] \n ",valores[i]);
@@ -2081,26 +2081,26 @@ int funcMedia(int ***custoCar, int ***aluguelCar, int ** carros, int ** solT, in
 	for(int i = 0; i < numeroInter; i++)
 	{
 		soma2T += (tempos[i] - mediaT)*(tempos[i] - mediaT);
-		if(i < numeroInter-1) 
+		if(i < numeroInter-1)
 			fprintf(arq," %f, ",tempos[i]);
 		else
 			fprintf(arq," %f]",tempos[i]);
 	}
 	fprintf(arq,"\n");
 	fprintf(arq,"\n");
-	fprintf(arq,"A média dos valores vale = %f\n",media);
-	fprintf(arq,"A média dos tempos vale = %f\n",mediaT);
+	fprintf(arq,"A mï¿½dia dos valores vale = %f\n",media);
+	fprintf(arq,"A mï¿½dia dos tempos vale = %f\n",mediaT);
 	double desvioPadrao = sqrt(soma2/(double)numeroInter);
-	double desvioPadraoT = sqrt(soma2T/(double)numeroInter);			
-	fprintf(arq,"Desvio padrão dos valores = %f\n",desvioPadrao);
-	fprintf(arq,"Desvio padrão dos Tempos = %f\n",desvioPadraoT);
+	double desvioPadraoT = sqrt(soma2T/(double)numeroInter);
+	fprintf(arq,"Desvio padrï¿½o dos valores = %f\n",desvioPadrao);
+	fprintf(arq,"Desvio padrï¿½o dos Tempos = %f\n",desvioPadraoT);
 	fprintf(arq,"Menor Valor = %d\n",minimo);
 	fprintf(arq,"Menor Tempo = %f\n",minimoT);
 	for(int i = 0; i < numeroInter; i++)
 	{
 		if(minimo == valores[i])
 		{
-			fprintf(arq,"A solução que deu o menor valor\n");
+			fprintf(arq,"A soluï¿½ï¿½o que deu o menor valor\n");
 			fprintf(arq,"\n");
  			for(int i = 0; i < 2; i++)
 			{
